@@ -34,7 +34,7 @@ func (ve *ValidationError) addFailure(field, msg string) {
 
 // Turn the slice of strings into one string.
 func (ve ValidationError) Error() string {
-	str := "The following errors occured during validation: "
+	str := ""
 	for _, e := range ve.Failures {
 		str += e + ". "
 	}
