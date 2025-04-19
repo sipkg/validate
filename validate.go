@@ -5,27 +5,27 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/tonyhb/govalidate/rules"
-	_ "github.com/tonyhb/govalidate/rules/alpha"
-	_ "github.com/tonyhb/govalidate/rules/alphanumeric"
-	_ "github.com/tonyhb/govalidate/rules/email"
-	_ "github.com/tonyhb/govalidate/rules/greaterthan"
-	_ "github.com/tonyhb/govalidate/rules/length"
-	_ "github.com/tonyhb/govalidate/rules/lessthan"
-	_ "github.com/tonyhb/govalidate/rules/maxlength"
-	_ "github.com/tonyhb/govalidate/rules/minlength"
-	_ "github.com/tonyhb/govalidate/rules/notempty"
-	_ "github.com/tonyhb/govalidate/rules/notzero"
-	_ "github.com/tonyhb/govalidate/rules/notzerotime"
-	_ "github.com/tonyhb/govalidate/rules/regexp"
-	_ "github.com/tonyhb/govalidate/rules/url"
-	_ "github.com/tonyhb/govalidate/rules/uuid"
+	"github.com/sipkg/validate/rules"
+	_ "github.com/sipkg/validate/rules/alpha"
+	_ "github.com/sipkg/validate/rules/alphanumeric"
+	_ "github.com/sipkg/validate/rules/email"
+	_ "github.com/sipkg/validate/rules/greaterthan"
+	_ "github.com/sipkg/validate/rules/length"
+	_ "github.com/sipkg/validate/rules/lessthan"
+	_ "github.com/sipkg/validate/rules/maxlength"
+	_ "github.com/sipkg/validate/rules/minlength"
+	_ "github.com/sipkg/validate/rules/notempty"
+	_ "github.com/sipkg/validate/rules/notzero"
+	_ "github.com/sipkg/validate/rules/notzerotime"
+	_ "github.com/sipkg/validate/rules/regexp"
+	_ "github.com/sipkg/validate/rules/url"
+	_ "github.com/sipkg/validate/rules/uuid"
 )
 
 // Takes a struct, loops through all fields and calls check on any fields that
 // have a validate tag. If the field is an anonymous struct recursively run
 // validation on it.
-func Run(object interface{}, fieldsSlice ...string) error {
+func Run(object any, fieldsSlice ...string) error {
 	pass := true // We'll override this if checking returns false
 	err := ValidationError{}
 
@@ -46,12 +46,12 @@ func Run(object interface{}, fieldsSlice ...string) error {
 
 	// Iterate through each field of the struct and validate
 	typ := value.Type() // A Type's Field method returns StructFields
-	for i := 0; i < value.NumField(); i++ {
+	for i := range value.NumField() {
 		var validateTag string
 		var validateError error
 
 		// Is this an anonymous struct? If so, we also need to validate on this.
-		if typ.Field(i).Anonymous == true {
+		if typ.Field(i).Anonymous {
 			if anonErr := Run(value.Field(i).Interface(), fieldsSlice...); anonErr != nil {
 				// The validation failed: set pass to false and merge the anonymous struct's
 				// validation errors with our current validation error above to give a complete
@@ -105,7 +105,7 @@ var rxRegexp = regexp.MustCompile(`Regexp:\/.+/`)
 
 // Takes a field's value and the validation tag and applies each check
 // until either a test fails or all tests pass.
-func validateField(data interface{}, fieldName, tag string) (err error) {
+func validateField(data any, fieldName, tag string) (err error) {
 	// A tag can specify multiple validation rules which are delimited via ','.
 	// However, because we allow regular expressions we can't split the tag field
 	// via all commas to find our validation rules: we need to extract the regular expression
@@ -141,7 +141,7 @@ func validateField(data interface{}, fieldName, tag string) (err error) {
 
 // Given a validation rule from a tag, run the associated validation methods and return
 // the result.
-func validateRule(data interface{}, fieldName, rule string) error {
+func validateRule(data any, fieldName, rule string) error {
 	var args []string
 
 	// Remove any preceeding spaces from comma separated tags
@@ -171,7 +171,7 @@ func validateRule(data interface{}, fieldName, rule string) error {
 	if method, err := rules.Get(rule); err != nil {
 		return err
 	} else {
-		var data = rules.ValidationData{
+		data := rules.ValidationData{
 			Field: fieldName,
 			Value: data,
 			Args:  args,

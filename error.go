@@ -34,7 +34,7 @@ func (ve *ValidationError) addFailure(field, msg string) {
 
 // Turn the slice of strings into one string.
 func (ve ValidationError) Error() string {
-	var str = "The following errors occured during validation: "
+	str := "The following errors occured during validation: "
 	for _, e := range ve.Failures {
 		str += e + ". "
 	}
@@ -48,9 +48,7 @@ func (ve ValidationError) Stringify() string {
 // Merge validation errors together. This is used with recursion when validating
 // anonymous structs.
 func (ve *ValidationError) Merge(other ValidationError) {
-	for _, v := range other.Failures {
-		ve.Failures = append(ve.Failures, v)
-	}
+	ve.Failures = append(ve.Failures, other.Failures...)
 	for f, v := range other.Fields {
 		if ve.Fields == nil {
 			ve.Fields = map[string]struct{}{}

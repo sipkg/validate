@@ -1,8 +1,8 @@
 package notzero
 
 import (
-	"github.com/tonyhb/govalidate/helper"
-	"github.com/tonyhb/govalidate/rules"
+	"github.com/sipkg/validate/helper"
+	"github.com/sipkg/validate/rules"
 )
 
 func init() {

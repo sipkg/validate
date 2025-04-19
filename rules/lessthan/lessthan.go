@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/tonyhb/govalidate/helper"
-	"github.com/tonyhb/govalidate/rules"
+	"github.com/sipkg/validate/helper"
+	"github.com/sipkg/validate/rules"
 )
 
 func init() {
@@ -27,7 +27,7 @@ func LessThan(data rules.ValidationData) error {
 
 	// We should always be provided with a length to validate against
 	if len(data.Args) == 0 {
-		return fmt.Errorf("No argument found in the validation struct (eg 'LessThan:5')")
+		return fmt.Errorf("no argument found in the validation struct (eg 'LessThan:5')")
 	}
 
 	// Typecast our argument and test
@@ -39,7 +39,7 @@ func LessThan(data rules.ValidationData) error {
 	if v > max {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        fmt.Sprintf("must be less than %d", max),
+			Failure:        fmt.Sprintf("must be less than %f", max),
 		}
 	}
 
