@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/sipkg/validate/helper"
+	"github.com/sipkg/validate/messages"
 	"github.com/sipkg/validate/rules"
 )
 
@@ -19,13 +20,13 @@ func MinLength(data rules.ValidationData) error {
 	if err != nil {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "is not a string",
+			Failure:        messages.Translate("is not a string"),
 		}
 	}
 
 	// We should always be provided with a length to validate against
 	if len(data.Args) == 0 {
-		return fmt.Errorf("No argument found in the validation struct (eg 'MinLength:5')")
+		return fmt.Errorf("no argument found in the validation struct (eg 'MinLength:5')")
 	}
 
 	// Typecast our argument and test
@@ -37,9 +38,8 @@ func MinLength(data rules.ValidationData) error {
 	if len(v) < min {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        fmt.Sprintf("is too short; it must be at least %d characters long", min),
+			Failure:        fmt.Sprintf(messages.Translate("is too short; it must be at least %d characters long"), min),
 		}
-
 	}
 
 	return nil

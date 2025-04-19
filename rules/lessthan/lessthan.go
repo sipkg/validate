@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/sipkg/validate/helper"
+	"github.com/sipkg/validate/messages"
 	"github.com/sipkg/validate/rules"
 )
 
@@ -21,7 +22,7 @@ func LessThan(data rules.ValidationData) error {
 	if err != nil {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "is not numeric",
+			Failure:        messages.Translate("is not numeric"),
 		}
 	}
 
@@ -39,7 +40,7 @@ func LessThan(data rules.ValidationData) error {
 	if v > max {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        fmt.Sprintf("must be less than %f", max),
+			Failure:        fmt.Sprintf(messages.Translate("must be less than %f"), max),
 		}
 	}
 

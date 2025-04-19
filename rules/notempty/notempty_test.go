@@ -7,7 +7,7 @@ import (
 )
 
 func TestNotEmpty(t *testing.T) {
-	var invalid = []interface{}{
+	invalid := []any{
 		1,
 		1.5,
 		int8(1),
@@ -33,5 +33,4 @@ func TestNotEmpty(t *testing.T) {
 	if err := NotEmpty(object); err != nil {
 		t.Errorf("Unexpected error with valid values")
 	}
-
 }

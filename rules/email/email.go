@@ -4,6 +4,7 @@ import (
 	"regexp"
 
 	"github.com/sipkg/validate/helper"
+	"github.com/sipkg/validate/messages"
 	"github.com/sipkg/validate/rules"
 )
 
@@ -16,7 +17,7 @@ func Email(data rules.ValidationData) (err error) {
 	if ok != nil {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "is not a string",
+			Failure:        messages.Translate("is not a string"),
 		}
 	}
 
@@ -26,7 +27,7 @@ func Email(data rules.ValidationData) (err error) {
 
 	return rules.ErrInvalid{
 		ValidationData: data,
-		Failure:        "is not a valid email address",
+		Failure:        messages.Translate("is not a valid email address"),
 	}
 }
 

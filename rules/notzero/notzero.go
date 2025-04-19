@@ -2,6 +2,7 @@ package notzero
 
 import (
 	"github.com/sipkg/validate/helper"
+	"github.com/sipkg/validate/messages"
 	"github.com/sipkg/validate/rules"
 )
 
@@ -16,14 +17,14 @@ func NotZero(data rules.ValidationData) error {
 	if err != nil {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "is not numeric",
+			Failure:        messages.Translate("is not numeric"),
 		}
 	}
 
 	if v == 0 {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "is 0",
+			Failure:        messages.Translate("is 0"),
 		}
 	}
 

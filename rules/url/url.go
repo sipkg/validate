@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/sipkg/validate/helper"
+	"github.com/sipkg/validate/messages"
 	"github.com/sipkg/validate/rules"
 )
 
@@ -22,7 +23,7 @@ func URL(data rules.ValidationData) error {
 	if err != nil {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "is not a string",
+			Failure:        messages.Translate("is not a string"),
 		}
 	}
 
@@ -30,21 +31,21 @@ func URL(data rules.ValidationData) error {
 	if err != nil {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "is not a valid URL",
+			Failure:        messages.Translate("is not a valid URL"),
 		}
 	}
 
 	if parsed.Scheme != "http" && parsed.Scheme != "https" {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        fmt.Sprintf("has an invalid scheme '%s'", parsed.Scheme),
+			Failure:        fmt.Sprintf(messages.Translate("has an invalid scheme '%s'"), parsed.Scheme),
 		}
 	}
 
 	if parsed.Host == "" || strings.IndexRune(parsed.Host, '\\') > 0 {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        fmt.Sprintf("has an invalid host ('%s')", parsed.Host),
+			Failure:        fmt.Sprintf(messages.Translate("has an invalid host '%s'"), parsed.Host),
 		}
 	}
 

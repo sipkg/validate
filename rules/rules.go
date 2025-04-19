@@ -14,7 +14,7 @@ type ValidationData struct {
 	Field string
 
 	// The value of the struct field being validated
-	Value interface{}
+	Value any
 
 	// Arguments from the validation tags. For example, in the following
 	// definition Args will will contain a single "5":
@@ -35,7 +35,7 @@ type ValidatorFunc func(ValidationData) error
 // already exists this will return an error
 func Add(tag string, method ValidatorFunc) (err error) {
 	if _, ok := rules[tag]; ok {
-		return fmt.Errorf("Validation method for '%s' already exists", tag)
+		return fmt.Errorf("validation method for '%s' already exists", tag)
 	}
 
 	rules[tag] = method

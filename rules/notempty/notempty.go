@@ -2,6 +2,7 @@ package notempty
 
 import (
 	"github.com/sipkg/validate/helper"
+	"github.com/sipkg/validate/messages"
 	"github.com/sipkg/validate/rules"
 )
 
@@ -16,13 +17,13 @@ func NotEmpty(data rules.ValidationData) (err error) {
 	if ok != nil {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "is not a string",
+			Failure:        messages.Translate("is not a string"),
 		}
 	}
 	if v == "" {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "is empty",
+			Failure:        messages.Translate("is empty"),
 		}
 	}
 	return nil

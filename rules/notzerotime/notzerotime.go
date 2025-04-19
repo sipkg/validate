@@ -3,6 +3,7 @@ package notzerotime
 import (
 	"time"
 
+	"github.com/sipkg/validate/messages"
 	"github.com/sipkg/validate/rules"
 )
 
@@ -16,14 +17,14 @@ func NotZeroTime(data rules.ValidationData) error {
 	if _, ok := data.Value.(time.Time); !ok {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "is not a Time type",
+			Failure:        messages.Translate("is not a Time type"),
 		}
 	}
 
-	if data.Value.(time.Time).Equal(time.Time{}) == true {
+	if data.Value.(time.Time).Equal(time.Time{}) {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "has a zero value",
+			Failure:        messages.Translate("has a zero value"),
 		}
 	}
 

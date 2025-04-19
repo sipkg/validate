@@ -4,6 +4,7 @@ import (
 	"regexp"
 
 	"github.com/sipkg/validate/helper"
+	"github.com/sipkg/validate/messages"
 	"github.com/sipkg/validate/rules"
 )
 
@@ -18,14 +19,14 @@ func UUID(data rules.ValidationData) error {
 	if err != nil {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "is not a string",
+			Failure:        messages.Translate("is not a string"),
 		}
 	}
 
 	if !IsUUID(v) {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "is an invalid UUID",
+			Failure:        messages.Translate("is an invalid UUID"),
 		}
 	}
 
@@ -33,7 +34,7 @@ func UUID(data rules.ValidationData) error {
 }
 
 func IsUUID(uuid string) bool {
-	var hexPattern = "^(urn\\:uuid\\:)?\\{?([a-z0-9]{8})-([a-z0-9]{4})-([1-5][a-z0-9]{3})-([a-z0-9]{4})-([a-z0-9]{12})\\}?$"
+	hexPattern := "^(urn\\:uuid\\:)?\\{?([a-z0-9]{8})-([a-z0-9]{4})-([1-5][a-z0-9]{3})-([a-z0-9]{4})-([a-z0-9]{12})\\}?$"
 	re := regexp.MustCompile(hexPattern)
 
 	if match := re.FindStringSubmatch(uuid); match == nil {

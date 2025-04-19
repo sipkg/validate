@@ -4,6 +4,7 @@ import (
 	"regexp"
 
 	"github.com/sipkg/validate/helper"
+	"github.com/sipkg/validate/messages"
 	"github.com/sipkg/validate/rules"
 )
 
@@ -17,14 +18,14 @@ func Alphanumeric(data rules.ValidationData) (err error) {
 	if ok != nil {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "is not a string",
+			Failure:        messages.Translate("is not a string"),
 		}
 	}
 
 	if regexp.MustCompile(`[^a-zA-Z0-9]+`).MatchString(v) {
 		return rules.ErrInvalid{
 			ValidationData: data,
-			Failure:        "contains non-alphanumeric characters",
+			Failure:        messages.Translate("contains non-alphanumeric characters"),
 		}
 	}
 
